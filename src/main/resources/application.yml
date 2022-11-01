@@ -15,7 +15,7 @@ spring:
       maximum-pool-size: 10
   jpa:
     open-in-view: false
-    generate-ddl: false
+    generate-ddl: true
     show-sql: true
     properties:
       hibernate:
@@ -23,3 +23,4 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: create
