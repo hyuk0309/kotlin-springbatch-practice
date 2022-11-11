@@ -31,7 +31,9 @@ class SimpleJobConfiguration(
     fun simpleStep1(@Value("#{jobParameters[requestDate]}") requestDate: String?): Step {
         return stepBuilderFactory.get("simpleStep1")
             .tasklet { _, _ ->
-                throw IllegalArgumentException("fail in step1")
+                logger.info { ">>>>> This is Step1" }
+                logger.info { ">>>>> requestData = {$requestDate}" }
+                RepeatStatus.FINISHED
             }
             .build()
     }
