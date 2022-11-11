@@ -21,16 +21,27 @@ class SimpleJobConfiguration(
     @Bean
     fun simpleJob(): Job {
         return jobBuilderFactory.get("simpleJob")
-            .start(simpleStep(null))
+            .start(simpleStep1(null))
+            .next(simpleStep2(null))
             .build()
     }
 
     @Bean
     @JobScope
-    fun simpleStep(@Value("#{jobParameters[requestDate]}")requestDate: String?): Step {
-        return stepBuilderFactory.get("simpleStep")
+    fun simpleStep1(@Value("#{jobParameters[requestDate]}") requestDate: String?): Step {
+        return stepBuilderFactory.get("simpleStep1")
             .tasklet { _, _ ->
-                log.info { ">>>>> This is Step1" }
+                throw IllegalArgumentException("fail in step1")
+            }
+            .build()
+    }
+
+    @Bean
+    @JobScope
+    fun simpleStep2(@Value("#{jobParameters[requestDate]}") requestDate: String?): Step {
+        return stepBuilderFactory.get("simpleStep2")
+            .tasklet { _, _ ->
+                log.info { ">>>>> This is Step2" }
                 log.info { ">>>>> requestData = {$requestDate}" }
                 RepeatStatus.FINISHED
             }
