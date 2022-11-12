@@ -1,7 +1,7 @@
 spring:
   batch:
-#    job:
-#      names: ${job.name:NONE}   # ex)--job.name=jsonFileJob4 createDate=2020-10-11
+    job:
+      names: ${job.name:NONE}
     jdbc:
       initialize-schema: never
   application:
