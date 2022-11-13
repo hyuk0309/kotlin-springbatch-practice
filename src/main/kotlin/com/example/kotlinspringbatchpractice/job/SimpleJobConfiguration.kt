@@ -1,5 +1,6 @@
 package com.example.kotlinspringbatchpractice.job
 
+import com.example.kotlinspringbatchpractice.job.step.SimpleJobTasklet
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
@@ -15,26 +16,23 @@ import org.springframework.context.annotation.Configuration
 class SimpleJobConfiguration(
     private val jobBuilderFactory: JobBuilderFactory,
     private val stepBuilderFactory: StepBuilderFactory,
+    private val simpleJobTasklet: SimpleJobTasklet
 ) {
     private val logger = KotlinLogging.logger {}
 
     @Bean
     fun simpleJob(): Job {
         return jobBuilderFactory.get("simpleJob")
-            .start(simpleStep1(null))
+            .start(simpleStep1())
             .next(simpleStep2(null))
             .build()
     }
 
     @Bean
     @JobScope
-    fun simpleStep1(@Value("#{jobParameters[requestDate]}") requestDate: String?): Step {
+    fun simpleStep1(): Step {
         return stepBuilderFactory.get("simpleStep1")
-            .tasklet { _, _ ->
-                logger.info { ">>>>> This is Step1" }
-                logger.info { ">>>>> requestData = {$requestDate}" }
-                RepeatStatus.FINISHED
-            }
+            .tasklet(simpleJobTasklet)
             .build()
     }
 
