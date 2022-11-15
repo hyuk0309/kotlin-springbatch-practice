@@ -29,8 +29,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-batch")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    // Mariadb
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.0.8")
+    // DB
+    implementation("mysql:mysql-connector-java")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
