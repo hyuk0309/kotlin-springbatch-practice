@@ -7,11 +7,11 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-data class Pay(
+class Pay(
+    val amount: Long,
+    val txName: String,
+    val txDateTime: LocalDateTime,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
-    var amount: Long,
-    var txName: String,
-    var txDateTime: LocalDateTime
+    val id: Long? = null
 )
