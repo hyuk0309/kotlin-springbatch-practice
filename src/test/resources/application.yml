@@ -1,0 +1,25 @@
+spring:
+  batch:
+    job:
+      names: ${job.name:NONE}
+    jdbc:
+      initialize-schema: never
+  application:
+    name: BATCH
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:jojoldu;MODE=MYSQL
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+      auto-commit: false
+      maximumPoolSize: 10
+
+logging:
+  level:
+    com.querydsl.sql: DEBUG
