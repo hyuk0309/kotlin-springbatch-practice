@@ -35,7 +35,6 @@ class BatchOnlyJdbcReaderTestConfiguration(
         queryProvider.setDataSource(dataSource)
         queryProvider.setSelectClause("order_date, sum(amount) as amount_sum")
         queryProvider.setFromClause("from sales")
-        queryProvider.setWhereClause("where order_date =:orderDate")
         queryProvider.setGroupClause("group by order_date")
         queryProvider.setSortKey("order_date")
 

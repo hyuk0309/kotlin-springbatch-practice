@@ -12,6 +12,5 @@ class SalesSum(
     val amountSum: Long,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long? = null
-) {
-}
+    val id: Long? = null
+)
