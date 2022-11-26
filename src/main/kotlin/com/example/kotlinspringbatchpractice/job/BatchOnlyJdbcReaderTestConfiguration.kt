@@ -25,12 +25,7 @@ class BatchOnlyJdbcReaderTestConfiguration(
     }
 
     @Bean
-    @StepScope
-    fun batchOnlyJdbcReaderTestJobReader(@Value("#{jobParameter[orderDate]}") orderDate: String): JdbcPagingItemReader<SalesSum> {
-        val params: Map<String, Any> = hashMapOf()
-
-        params.plus(Pair("orderDate", LocalDate.parse(orderDate, FORMATTER)))
-
+    fun batchOnlyJdbcReaderTestJobReader(): JdbcPagingItemReader<SalesSum> {
         val queryProvider = SqlPagingQueryProviderFactoryBean()
         queryProvider.setDataSource(dataSource)
         queryProvider.setSelectClause("order_date, sum(amount) as amount_sum")
@@ -45,7 +40,6 @@ class BatchOnlyJdbcReaderTestConfiguration(
             .dataSource(dataSource)
             .rowMapper(BeanPropertyRowMapper(SalesSum::class.java))
             .queryProvider(queryProvider.`object`)
-            .parameterValues(params)
             .build()
     }
 }

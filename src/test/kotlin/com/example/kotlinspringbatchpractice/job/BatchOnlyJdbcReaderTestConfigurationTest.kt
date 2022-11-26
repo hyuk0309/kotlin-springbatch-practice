@@ -69,7 +69,7 @@ internal class BatchOnlyJdbcReaderTestConfigurationTest {
         )
 
         val reader =
-            job.batchOnlyJdbcReaderTestJobReader(orderDate.format(BatchOnlyJdbcReaderTestConfiguration.FORMATTER))
+            job.batchOnlyJdbcReaderTestJobReader()
         reader.afterPropertiesSet()
 
         //when & then
