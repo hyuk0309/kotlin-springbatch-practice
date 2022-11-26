@@ -46,9 +46,9 @@ internal class BatchOnlyJdbcReaderTestConfigurationTest {
     @Test
     fun `기간내_Sales_집계되어_SalesSum이된다`() {
         //given
-        val amount1 = 1000
-        val amount2 = 100
-        val amount3 = 10
+        val amount1 = 1000L
+        val amount2 = 100L
+        val amount3 = 10L
         jdbcTemplate.update(
             "insert into sales (order_date, amount, order_no) values (?, ?, ?)",
             orderDate,

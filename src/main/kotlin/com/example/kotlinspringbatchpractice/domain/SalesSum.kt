@@ -8,9 +8,9 @@ import javax.persistence.Id
 
 @Entity
 class SalesSum(
-    val orderDate: LocalDate,
-    val amountSum: Long,
+    var orderDate: LocalDate,
+    var amountSum: Long,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 )
