@@ -2,8 +2,8 @@ spring:
   batch:
     job:
       names: ${job.name:NONE}
-    jdbc:
-      initialize-schema: never
+#    jdbc:
+#      initialize-schema: never
   application:
     name: BATCH
 
