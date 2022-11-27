@@ -4,9 +4,9 @@ import com.example.kotlinspringbatchpractice.TestBatchConfig
 import com.example.kotlinspringbatchpractice.TestDataSourceConfiguration
 import com.example.kotlinspringbatchpractice.domain.SalesSum
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.StepExecution
 import org.springframework.batch.item.database.JdbcPagingItemReader
@@ -46,13 +46,13 @@ internal class BatchJdbcUnitTestConfigurationTest {
         return MetaDataInstanceFactory.createStepExecution(jobParameters)
     }
 
-    @Before
+    @BeforeAll
     fun setUp() {
         this.reader.setDataSource(this.dataSource)
         this.jdbcTemplate = JdbcTemplate(this.dataSource)
     }
 
-    @After
+    @AfterAll
     fun tearDown() {
         this.jdbcTemplate.update("delete from sales")
     }

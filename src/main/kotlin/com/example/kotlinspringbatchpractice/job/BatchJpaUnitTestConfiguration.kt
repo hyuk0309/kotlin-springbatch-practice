@@ -46,12 +46,10 @@ class BatchJpaUnitTestConfiguration(
         val params: Map<String, Any> = hashMapOf(Pair("orderDate", LocalDate.parse(orderDate, FORMATTER)))
 
         val className = SalesSum::class.java.name
-        val queryString = java.lang.String.format(
-            "SELECT new %s(s.orderDate, SUM(s.amount)) " +
-                    "FROM Sales s " +
-                    "WHERE s.orderDate =:orderDate " +
-                    "GROUP BY s.orderDate ", className
-        )
+        val queryString = "SELECT new ${className}(s.orderDate, SUM(s.amount)) " +
+                "FROM Sales s " +
+                "WHERE s.orderDate =:orderDate " +
+                "GROUP BY s.orderDate "
 
         return JpaPagingItemReaderBuilder<SalesSum>()
             .name("batchJpaUnitTestJobReader")

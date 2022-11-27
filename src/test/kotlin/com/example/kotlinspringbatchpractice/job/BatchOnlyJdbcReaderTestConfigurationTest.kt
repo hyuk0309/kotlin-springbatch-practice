@@ -2,9 +2,9 @@ package com.example.kotlinspringbatchpractice.job
 
 import com.example.kotlinspringbatchpractice.TestDataSourceConfiguration
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
@@ -29,7 +29,7 @@ internal class BatchOnlyJdbcReaderTestConfigurationTest {
     @Autowired
     private lateinit var job: BatchOnlyJdbcReaderTestConfiguration
 
-    @Before
+    @BeforeAll
     fun setUp() {
         this.context = AnnotationConfigApplicationContext(TestDataSourceConfiguration::class.java)
         this.dataSource = context.getBean("dataSource") as DataSource
@@ -38,7 +38,7 @@ internal class BatchOnlyJdbcReaderTestConfigurationTest {
         this.job = BatchOnlyJdbcReaderTestConfiguration(dataSource)
     }
 
-    @After
+    @AfterAll
     fun tearDown() {
         context.close()
     }

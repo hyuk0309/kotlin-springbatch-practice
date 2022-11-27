@@ -1,24 +1,33 @@
 package com.example.kotlinspringbatchpractice.job
 
+import com.example.kotlinspringbatchpractice.TestBatchConfig
 import com.example.kotlinspringbatchpractice.domain.Sales
 import com.example.kotlinspringbatchpractice.domain.SalesRepository
 import com.example.kotlinspringbatchpractice.domain.SalesSum
 import com.example.kotlinspringbatchpractice.domain.SalesSumRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.StepExecution
 import org.springframework.batch.item.ExecutionContext
 import org.springframework.batch.item.database.JpaPagingItemReader
 import org.springframework.batch.test.MetaDataInstanceFactory
+import org.springframework.batch.test.context.SpringBatchTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.ApplicationContext
 import java.time.LocalDate
 
-@SpringBootTest
-internal class BatchJpaUnitTestConfigurationTest {
+@SpringBatchTest
+@SpringBootTest(
+    classes = [
+        BatchJpaUnitTestConfiguration::class,
+        TestBatchConfig::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class BatchJpaUnitTestConfigurationTest {
 
     @Autowired
     private lateinit var reader: JpaPagingItemReader<SalesSum>
@@ -29,10 +38,7 @@ internal class BatchJpaUnitTestConfigurationTest {
     @Autowired
     private lateinit var salesSumRepository: SalesSumRepository
 
-    @Autowired
-    private lateinit var applicationContext: ApplicationContext
-
-    @After
+    @AfterAll
     fun tearDown() {
         salesRepository.deleteAllInBatch()
         salesSumRepository.deleteAllInBatch()

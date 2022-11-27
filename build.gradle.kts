@@ -18,7 +18,7 @@ repositories {
     mavenCentral()
 }
 
-allOpen{
+allOpen {
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.MappedSuperclass")
     annotation("javax.persistence.Embeddable")
@@ -41,8 +41,12 @@ dependencies {
     // Log
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.batch:spring-batch-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+    }
+    testImplementation("org.springframework.batch:spring-batch-test") {
+        exclude(group = "junit", module = "junit")
+    }
 }
 
 tasks.withType<KotlinCompile> {
