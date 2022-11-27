@@ -10,7 +10,8 @@ import javax.persistence.Id
 class SalesSum(
     var orderDate: LocalDate,
     var amountSum: Long,
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-)
+}
