@@ -2,8 +2,8 @@ spring:
   batch:
     job:
       names: ${job.name:NONE}
-#    jdbc:
-#      initialize-schema: never
+    jdbc:
+      initialize-schema: embedded
   application:
     name: BATCH
 
@@ -13,13 +13,13 @@ spring:
     show-sql: true
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:mem:jojoldu;MODE=MYSQL
+      jdbc-url: jdbc:h2:mem:elvis;MODE=MYSQL
       username: sa
       password:
       driver-class-name: org.h2.Driver
       auto-commit: false
       maximumPoolSize: 10
 
-logging:
-  level:
-    com.querydsl.sql: DEBUG
+#logging:
+#  level:
+#    com.querydsl.sql: DEBUG
