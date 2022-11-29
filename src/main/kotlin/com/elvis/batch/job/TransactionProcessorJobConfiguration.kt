@@ -1,7 +1,7 @@
 package com.elvis.batch.job
 
-import com.example.batch.domain.ClassInformation
-import com.example.batch.domain.Teacher
+import com.elvis.batch.domain.ClassInformation
+import com.elvis.batch.domain.Teacher
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step

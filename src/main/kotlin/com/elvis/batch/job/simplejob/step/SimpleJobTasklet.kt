@@ -1,4 +1,4 @@
-package com.elvis.batch.job.step
+package com.elvis.batch.job.simplejob.step
 
 import mu.KotlinLogging
 import org.springframework.batch.core.StepContribution
@@ -13,14 +13,17 @@ import org.springframework.stereotype.Component
 @StepScope
 class SimpleJobTasklet : Tasklet {
 
-    private val logger = KotlinLogging.logger {}
-
     @Value("#{jobParameters[requestDate]}")
     lateinit var requestDate: String
 
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus? {
-        logger.info { ">>>>> This is Step1" }
-        logger.info { ">>>>> requestDate = {$requestDate}" }
+        log.info { ">>>>> This is Step1" }
+        log.info { ">>>>> requestDate = {$requestDate}" }
         return RepeatStatus.FINISHED
     }
+
+    companion object {
+        private val log = KotlinLogging.logger {}
+    }
 }
+

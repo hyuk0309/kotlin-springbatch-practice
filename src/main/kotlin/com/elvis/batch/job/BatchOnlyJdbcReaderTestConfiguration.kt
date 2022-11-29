@@ -1,6 +1,6 @@
 package com.elvis.batch.job
 
-import com.example.batch.domain.SalesSum
+import com.elvis.batch.domain.SalesSum
 import org.springframework.batch.item.database.JdbcPagingItemReader
 import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder
 import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean

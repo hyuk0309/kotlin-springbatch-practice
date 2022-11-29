@@ -1,7 +1,7 @@
 package com.elvis.batch.job
 
-import com.example.batch.domain.Pay
-import com.example.batch.domain.Pay2
+import com.elvis.batch.domain.Pay
+import com.elvis.batch.domain.Pay2
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step

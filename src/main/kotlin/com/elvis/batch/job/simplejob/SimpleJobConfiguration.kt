@@ -1,6 +1,6 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.simplejob
 
-import com.example.batch.job.step.SimpleJobTasklet
+import com.elvis.batch.job.simplejob.step.SimpleJobTasklet
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
@@ -18,8 +18,11 @@ class SimpleJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val simpleJobTasklet: SimpleJobTasklet
 ) {
-    private val logger = KotlinLogging.logger {}
 
+    /**
+     * SimpleJob 구성
+     * - simpleSte1 -> simpleStep2
+     */
     @Bean
     fun simpleJob(): Job {
         return jobBuilderFactory.get("simpleJob")
@@ -41,10 +44,14 @@ class SimpleJobConfiguration(
     fun simpleStep2(@Value("#{jobParameters[requestDate]}") requestDate: String?): Step {
         return stepBuilderFactory.get("simpleStep2")
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is Step2" }
-                logger.info { ">>>>> requestData = {$requestDate}" }
+                log.info { ">>>>> This is Step2" }
+                log.info { ">>>>> requestData = {$requestDate}" }
                 RepeatStatus.FINISHED
             }
             .build()
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger {}
     }
 }

@@ -1,6 +1,6 @@
 package com.elvis.batch.job
 
-import com.example.batch.domain.SalesSum
+import com.elvis.batch.domain.SalesSum
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory

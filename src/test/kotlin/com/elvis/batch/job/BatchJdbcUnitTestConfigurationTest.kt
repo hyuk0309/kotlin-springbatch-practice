@@ -1,8 +1,8 @@
 package com.elvis.batch.job
 
-import com.example.batch.TestBatchConfig
-import com.example.batch.TestDataSourceConfiguration
-import com.example.batch.domain.SalesSum
+import com.elvis.batch.TestBatchConfig
+import com.elvis.batch.TestDataSourceConfiguration
+import com.elvis.batch.domain.SalesSum
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
