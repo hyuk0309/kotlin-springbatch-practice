@@ -10,7 +10,7 @@ plugins {
     kotlin("plugin.allopen") version "1.7.20"
 }
 
-group = "com.example"
+group = "com.elvis"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
