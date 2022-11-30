@@ -1,6 +1,7 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.stepflowjob
 
 import mu.KotlinLogging
+import org.springframework.batch.core.ExitStatus
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
@@ -11,40 +12,38 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class StepNextConditionalJobConfiguration(
-    val jobBuilderFactory: JobBuilderFactory,
-    val stepBuilderFactory: StepBuilderFactory
+    private val jobBuilderFactory: JobBuilderFactory,
+    private val stepBuilderFactory: StepBuilderFactory
 ) {
-    private val logger = KotlinLogging.logger {}
-
     @Bean
     fun stepNextConditionalJob(): Job {
-        return jobBuilderFactory.get("stepNextConditionalJob")
+        return jobBuilderFactory.get(JOB_NAME)
             .start(conditionalJobStep1())
-                .on("FAILED")
-                .to(conditionalJobStep3())
-                .on("*")
-                .end()
+            .on("FAILED")
+            .to(conditionalJobStep3())
+            .on("*")
+            .end()
             .from(conditionalJobStep1())
-                .on("*")
-                .to(conditionalJobStep2())
-                .next(conditionalJobStep3())
-                .on("*")
-                .end()
+            .on("*")
+            .to(conditionalJobStep2())
+            .next(conditionalJobStep3())
+            .on("*")
+            .end()
             .end()
             .build()
     }
 
     @Bean
     fun conditionalJobStep1(): Step {
-        return stepBuilderFactory.get("conditionalJobStep1")
+        return stepBuilderFactory.get(STEP_1_NAME)
             .tasklet { contribution, _ ->
-                logger.info { ">>>>> This is stepNextConditionalJob Step1" }
+                log.info { ">>>>> This is stepNextConditionalJob Step1" }
 
                 /**
                  * ExitStatus를 Fail로 지정.
                  * 해당 status를 보고 flow 진행.
                  */
-//                contribution.exitStatus = ExitStatus.FAILED
+                contribution.exitStatus = ExitStatus.FAILED
 
                 RepeatStatus.FINISHED
             }
@@ -53,9 +52,9 @@ class StepNextConditionalJobConfiguration(
 
     @Bean
     fun conditionalJobStep2(): Step {
-        return stepBuilderFactory.get("conditionalJobStep2")
+        return stepBuilderFactory.get(STEP_2_NAME)
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is stepNextConditionalJob Step2" }
+                log.info { ">>>>> This is stepNextConditionalJob Step2" }
                 RepeatStatus.FINISHED
             }
             .build()
@@ -63,11 +62,20 @@ class StepNextConditionalJobConfiguration(
 
     @Bean
     fun conditionalJobStep3(): Step {
-        return stepBuilderFactory.get("conditionalJobStep3")
+        return stepBuilderFactory.get(STEP_3_NAME)
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is stepNextConditionalJob Step3" }
+                log.info { ">>>>> This is stepNextConditionalJob Step3" }
                 RepeatStatus.FINISHED
             }
             .build()
+    }
+
+    companion object {
+        const val JOB_NAME = "stepNextConditionalJob"
+        const val STEP_1_NAME = "conditionalJobStep1"
+        const val STEP_2_NAME = "conditionalJobStep2"
+        const val STEP_3_NAME = "conditionalJobStep3"
+
+        private val log = KotlinLogging.logger {}
     }
 }
