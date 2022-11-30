@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.stepflowjob
 
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
@@ -11,11 +11,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class StepNextJobConfiguration(
-    val jobBuilderFactory: JobBuilderFactory,
-    val stepBuilderFactory: StepBuilderFactory
+    private val jobBuilderFactory: JobBuilderFactory,
+    private val stepBuilderFactory: StepBuilderFactory
 ) {
-    val logger = KotlinLogging.logger {}
-
     @Bean
     fun stepNextJob(): Job {
         return jobBuilderFactory.get("stepNextJob")
@@ -29,7 +27,7 @@ class StepNextJobConfiguration(
     fun step1(): Step {
         return stepBuilderFactory.get("step1")
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is Step1" }
+                log.info { ">>>>> This is Step1" }
                 RepeatStatus.FINISHED
             }
             .build()
@@ -39,7 +37,7 @@ class StepNextJobConfiguration(
     fun step2(): Step {
         return stepBuilderFactory.get("step2")
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is Step2" }
+                log.info { ">>>>> This is Step2" }
                 RepeatStatus.FINISHED
             }
             .build()
@@ -49,9 +47,13 @@ class StepNextJobConfiguration(
     fun step3(): Step {
         return stepBuilderFactory.get("step3")
             .tasklet { _, _ ->
-                logger.info { ">>>>> This is Step3" }
+                log.info { ">>>>> This is Step3" }
                 RepeatStatus.FINISHED
             }
             .build()
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger {}
     }
 }
