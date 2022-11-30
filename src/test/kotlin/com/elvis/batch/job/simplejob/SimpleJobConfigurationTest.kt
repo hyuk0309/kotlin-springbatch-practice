@@ -3,16 +3,14 @@ package com.elvis.batch.job.simplejob
 import com.elvis.batch.TestBatchConfig
 import com.elvis.batch.job.simplejob.step.SimpleJobTasklet
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.JobParametersBuilder
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.context.SpringBatchTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
-import javax.batch.runtime.BatchStatus
 
 @SpringBatchTest
 @SpringBootTest(
@@ -40,6 +38,6 @@ internal class SimpleJobConfigurationTest {
         val jobExecution = jobLauncherTestUtils.launchJob(jobParameters)
 
         //then
-        Assertions.assertThat(jobExecution.status.toString()).isEqualTo(BatchStatus.COMPLETED.toString())
+        Assertions.assertThat(jobExecution.status).isEqualTo(BatchStatus.COMPLETED)
     }
 }
