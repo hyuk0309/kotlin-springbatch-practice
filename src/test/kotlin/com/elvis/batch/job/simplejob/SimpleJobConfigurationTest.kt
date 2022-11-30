@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.batch.core.JobParametersBuilder
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.context.SpringBatchTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +19,8 @@ import javax.batch.runtime.BatchStatus
     classes = [
         SimpleJobConfiguration::class,
         SimpleJobTasklet::class,
-        TestBatchConfig::class]
+        TestBatchConfig::class
+    ]
 )
 internal class SimpleJobConfigurationTest {
 
