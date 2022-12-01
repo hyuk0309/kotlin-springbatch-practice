@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.stepflowjob
 
 import mu.KotlinLogging
 import org.springframework.batch.core.Job
@@ -16,29 +16,27 @@ import java.util.*
 
 @Configuration
 class DeciderJobConfiguration(
-    val jobBuilderFactory: JobBuilderFactory,
-    val stepBuilderFactory: StepBuilderFactory
+    private val jobBuilderFactory: JobBuilderFactory,
+    private val stepBuilderFactory: StepBuilderFactory
 ) {
-    private val logger = KotlinLogging.logger {}
-
     @Bean
     fun deciderJob(): Job {
-        return jobBuilderFactory.get("deciderJob")
+        return jobBuilderFactory.get(JOB_NAME)
             .start(startStep())
             .next(decider())
             .from(decider())
-                .on("ODD")
-                .to(oddStep())
+            .on("ODD")
+            .to(oddStep())
             .from(decider())
-                .on("EVEN")
-                .to(evenStep())
+            .on("EVEN")
+            .to(evenStep())
             .end()
             .build()
     }
 
     @Bean
     fun startStep(): Step {
-        return stepBuilderFactory.get("startStep")
+        return stepBuilderFactory.get(START_STEP_NAME)
             .tasklet { _, _ ->
                 logger.info { ">>>>> Start!" }
                 RepeatStatus.FINISHED
@@ -48,7 +46,7 @@ class DeciderJobConfiguration(
 
     @Bean
     fun evenStep(): Step {
-        return stepBuilderFactory.get("evenStep")
+        return stepBuilderFactory.get(EVEN_STEP_NAME)
             .tasklet { _, _ ->
                 logger.info { ">>>>> 짝수입니다." }
                 RepeatStatus.FINISHED
@@ -58,7 +56,7 @@ class DeciderJobConfiguration(
 
     @Bean
     fun oddStep(): Step {
-        return stepBuilderFactory.get("oddStep")
+        return stepBuilderFactory.get(ODD_STEP_NAME)
             .tasklet { _, _ ->
                 logger.info { ">>>>> 홀수입니다." }
                 RepeatStatus.FINISHED
@@ -73,13 +71,15 @@ class DeciderJobConfiguration(
 
     class OddDecider : JobExecutionDecider {
 
-        private val logger = KotlinLogging.logger {}
+        companion object {
+            private val log = KotlinLogging.logger {}
+        }
 
         override fun decide(jobExecution: JobExecution, stepExecution: StepExecution?): FlowExecutionStatus {
             val rand = Random()
 
             val randomNumber = rand.nextInt(50) + 1
-            logger.info { "랜덤숫자: {$randomNumber}" }
+            log.info { "랜덤숫자: {$randomNumber}" }
 
             return if (randomNumber % 2 == 0) {
                 FlowExecutionStatus("EVEN")
@@ -87,5 +87,14 @@ class DeciderJobConfiguration(
                 FlowExecutionStatus("ODD")
             }
         }
+    }
+
+    companion object {
+        const val JOB_NAME = "deciderJob"
+        const val START_STEP_NAME = "startStep"
+        const val EVEN_STEP_NAME = "evenStep"
+        const val ODD_STEP_NAME = "oddStep"
+
+        private val logger = KotlinLogging.logger {}
     }
 }
