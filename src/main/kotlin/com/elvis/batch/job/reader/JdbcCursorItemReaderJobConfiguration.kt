@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.reader
 
 import com.elvis.batch.domain.Pay
 import mu.KotlinLogging
@@ -21,23 +21,19 @@ class JdbcCursorItemReaderJobConfiguration(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    companion object {
-        const val CHUNK_SIZE = 10
-    }
-
     @Bean
     fun jobCursorItemReaderJob(): Job {
-        return jobBuilderFactory.get("jdbcCursorItemReaderJob")
+        return jobBuilderFactory.get(JOB_NAME)
             .start(jdbcCursorItemReaderStep())
             .build()
     }
 
     @Bean
     fun jdbcCursorItemReaderStep(): Step {
-        return stepBuilderFactory.get("jdbcCursorItemReaderStep")
+        return stepBuilderFactory.get(STEP_NAME)
             .chunk<Pay, Pay>(CHUNK_SIZE)
             .reader(jdbcCursorItemReader())
-            .writer {list ->
+            .writer { list ->
                 for (pay in list)
                     logger.info { "Current Pay={$pay}" }  // TODO 데이터는 잘 불러오는데, 매핑된 객체가 null을 갖고 있음
             }
@@ -47,11 +43,19 @@ class JdbcCursorItemReaderJobConfiguration(
     @Bean
     fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> {
         return JdbcCursorItemReaderBuilder<Pay>()
+            .name(READER_NAME)
             .fetchSize(CHUNK_SIZE)
             .dataSource(dateSource)
             .rowMapper(BeanPropertyRowMapper(Pay::class.java))
             .sql("SELECT id, amount, tx_name, tx_date_time FROM pay")
-            .name("jdbcCursorItemReader")
             .build()
+    }
+
+    companion object {
+        const val JOB_NAME = "jdbcCursorItemReaderJob"
+        const val STEP_NAME = "jdbcCursorItemReaderStep"
+        const val READER_NAME = "jdbcCursorItemReader"
+
+        const val CHUNK_SIZE = 10
     }
 }
