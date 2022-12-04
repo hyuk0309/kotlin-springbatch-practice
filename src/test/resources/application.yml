@@ -22,4 +22,8 @@ spring:
 
 #logging:
 #  level:
-#    com.querydsl.sql: DEBUG
+logging:
+  level:
+    org.springframework.batch: DEBUG
+    org.springframework.jdbc: DEBUG
+    com.querydsl.sql: DEBUG

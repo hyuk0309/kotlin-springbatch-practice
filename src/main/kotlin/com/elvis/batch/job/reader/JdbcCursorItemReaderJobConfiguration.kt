@@ -5,7 +5,10 @@ import mu.KotlinLogging
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
+import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
+import org.springframework.batch.core.configuration.annotation.StepScope
+import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JdbcCursorItemReader
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder
 import org.springframework.context.annotation.Bean
@@ -19,7 +22,7 @@ class JdbcCursorItemReaderJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val dateSource: DataSource
 ) {
-    private val logger = KotlinLogging.logger {}
+    private val log = KotlinLogging.logger {}
 
     @Bean
     fun jobCursorItemReaderJob(): Job {
@@ -29,19 +32,18 @@ class JdbcCursorItemReaderJobConfiguration(
     }
 
     @Bean
+    @JobScope
     fun jdbcCursorItemReaderStep(): Step {
         return stepBuilderFactory.get(STEP_NAME)
             .chunk<Pay, Pay>(CHUNK_SIZE)
             .reader(jdbcCursorItemReader())
-            .writer { list ->
-                for (pay in list)
-                    logger.info { "Current Pay={$pay}" }  // TODO 데이터는 잘 불러오는데, 매핑된 객체가 null을 갖고 있음
-            }
+            .writer(jdbcCursorItemWriter())
             .build()
     }
 
     @Bean
-    fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> {
+    @StepScope
+    fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> { // query가 왜 안 나가지?
         return JdbcCursorItemReaderBuilder<Pay>()
             .name(READER_NAME)
             .fetchSize(CHUNK_SIZE)
@@ -49,6 +51,16 @@ class JdbcCursorItemReaderJobConfiguration(
             .rowMapper(BeanPropertyRowMapper(Pay::class.java))
             .sql("SELECT id, amount, tx_name, tx_date_time FROM pay")
             .build()
+    }
+
+    @Bean
+    @StepScope
+    fun jdbcCursorItemWriter(): ItemWriter<Pay> {
+        return ItemWriter { list ->
+            log.info {"I'm item writer in spring batch framework."}
+            for (pay in list)
+                log.info { "Current Pay={$pay}" }
+        }
     }
 
     companion object {
