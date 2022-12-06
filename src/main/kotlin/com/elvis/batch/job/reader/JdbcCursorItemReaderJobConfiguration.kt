@@ -42,8 +42,8 @@ class JdbcCursorItemReaderJobConfiguration(
     }
 
     @Bean
-    @StepScope
-    fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> { // query가 왜 안 나가지?
+//    @StepScope //TODO : Proxy 안됨?!
+    fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> {
         return JdbcCursorItemReaderBuilder<Pay>()
             .name(READER_NAME)
             .fetchSize(CHUNK_SIZE)
@@ -57,7 +57,7 @@ class JdbcCursorItemReaderJobConfiguration(
     @StepScope
     fun jdbcCursorItemWriter(): ItemWriter<Pay> {
         return ItemWriter { list ->
-            log.info {"I'm item writer in spring batch framework."}
+            log.info { "I'm item writer in spring batch framework." }
             for (pay in list)
                 log.info { "Current Pay={$pay}" }
         }

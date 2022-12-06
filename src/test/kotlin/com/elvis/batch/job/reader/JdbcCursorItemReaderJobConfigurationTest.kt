@@ -21,7 +21,6 @@ import javax.sql.DataSource
 @SpringBatchTest
 @SpringBootTest(
     classes = [
-//        TestDataSourceConfiguration::class,
         JdbcCursorItemReaderJobConfiguration::class,
         TestBatchConfig::class
     ]
