@@ -11,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JdbcCursorItemReader
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.BeanPropertyRowMapper
@@ -20,7 +21,7 @@ import javax.sql.DataSource
 class JdbcCursorItemReaderJobConfiguration(
     private val jobBuilderFactory: JobBuilderFactory,
     private val stepBuilderFactory: StepBuilderFactory,
-    private val dateSource: DataSource
+    private val dateSource: DataSource,
 ) {
     private val log = KotlinLogging.logger {}
 
@@ -41,8 +42,7 @@ class JdbcCursorItemReaderJobConfiguration(
             .build()
     }
 
-    @Bean
-//    @StepScope //TODO : Proxy 안됨?!
+    @Bean //TODO: resolve @StepScope issue
     fun jdbcCursorItemReader(): JdbcCursorItemReader<Pay> {
         return JdbcCursorItemReaderBuilder<Pay>()
             .name(READER_NAME)
