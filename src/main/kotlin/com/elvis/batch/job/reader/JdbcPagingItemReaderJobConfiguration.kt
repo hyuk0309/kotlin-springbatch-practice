@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.reader
 
 import com.elvis.batch.domain.Pay
 import mu.KotlinLogging
@@ -22,12 +22,7 @@ class JdbcPagingItemReaderJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val dataSource: DataSource
 ) {
-
-    companion object {
-        const val CHUNK_SIZE = 10
-    }
-
-    private val logger = KotlinLogging.logger {}
+    private val log = KotlinLogging.logger {}
 
     @Bean
     fun jdbcPagingItemReaderJob(): Job {
@@ -43,7 +38,7 @@ class JdbcPagingItemReaderJobConfiguration(
             .reader(jdbcPagingItemReader())
             .writer { list ->
                 for (pay in list) {
-                    logger.info("Current Pay={$pay}")
+                    log.info("Current Pay={$pay}")
                 }
             }
             .build()
@@ -79,5 +74,9 @@ class JdbcPagingItemReaderJobConfiguration(
         queryProvider.setSortKeys(sortKeys)
 
         return queryProvider.`object`
+    }
+
+    companion object {
+        const val CHUNK_SIZE = 10
     }
 }
