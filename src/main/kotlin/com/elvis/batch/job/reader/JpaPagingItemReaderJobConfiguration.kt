@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.reader
 
 import com.elvis.batch.domain.Pay
 import mu.KotlinLogging
@@ -18,12 +18,6 @@ class JpaPagingItemReaderJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory
 ) {
-
-    companion object {
-        const val CHUNK_SIZE = 10
-        val logger = KotlinLogging.logger {}
-    }
-
     @Bean
     fun jpaPagingItemReaderJob(): Job {
         return jobBuilderFactory.get("jpaPagingItemReaderJob")
@@ -33,12 +27,12 @@ class JpaPagingItemReaderJobConfiguration(
 
     @Bean
     fun jpaPagingItemReaderStep(): Step {
-        return stepBuilderFactory.get("jpaPaingItemReaderStep")
+        return stepBuilderFactory.get("jpaPagingItemReaderStep")
             .chunk<Pay, Pay>(CHUNK_SIZE)
             .reader(jpaPagingItemReader())
             .writer { list ->
                 for (pay in list)
-                    logger.info { "Current Pay={$pay}" }
+                    log.info { "Current Pay={$pay}" }
             }
             .build()
     }
@@ -51,5 +45,10 @@ class JpaPagingItemReaderJobConfiguration(
             .pageSize(CHUNK_SIZE)
             .queryString("SELECT p FROM Pay p WHERE amount >= 2000")
             .build()
+    }
+
+    companion object {
+        const val CHUNK_SIZE = 10
+        val log = KotlinLogging.logger {}
     }
 }
