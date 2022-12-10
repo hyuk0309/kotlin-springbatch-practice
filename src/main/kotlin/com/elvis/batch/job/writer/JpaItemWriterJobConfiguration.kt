@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.writer
 
 import com.elvis.batch.domain.Pay
 import com.elvis.batch.domain.Pay2
@@ -22,12 +22,6 @@ class JpaItemWriterJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory
 ) {
-
-    companion object {
-        val logger = KotlinLogging.logger {}
-        const val CHUNK_SIZE = 10
-    }
-
     @Bean
     fun jpaItemWriterJob(): Job {
         return jobBuilderFactory.get("jpaItemWriterJob")
@@ -56,7 +50,7 @@ class JpaItemWriterJobConfiguration(
     }
 
     @Bean
-    fun jpaItemProcessor(): ItemProcessor<Pay, Pay2?> {
+    fun jpaItemProcessor(): ItemProcessor<Pay, Pay2> {
         return ItemProcessor { pay ->
             Pay2(pay.amount, pay.txName, pay.txDateTime)
         }
@@ -67,5 +61,10 @@ class JpaItemWriterJobConfiguration(
         val jpaItemWriter = JpaItemWriter<Pay2>()
         jpaItemWriter.setEntityManagerFactory(entityManagerFactory)
         return jpaItemWriter
+    }
+
+    companion object {
+        val log = KotlinLogging.logger {}
+        const val CHUNK_SIZE = 10
     }
 }
