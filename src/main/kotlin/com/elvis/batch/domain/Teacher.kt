@@ -14,7 +14,7 @@ class Teacher(
     val subject: String,
 
     @OneToMany(mappedBy = "teacher", cascade = [CascadeType.ALL])
-    val students: List<Student> = listOf(),
+    val students: MutableList<Student> = mutableListOf(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.processor
 
 import com.elvis.batch.domain.ClassInformation
 import com.elvis.batch.domain.Teacher
@@ -21,15 +21,6 @@ class TransactionProcessorJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val emf: EntityManagerFactory
 ) {
-
-    companion object {
-        private const val JOB_NAME = "transactionProcessorJob"
-        private const val BEAN_PREFIX = JOB_NAME + "_"
-        private const val CHUNK_SIZE = 10
-
-        private val logger = KotlinLogging.logger {}
-    }
-
     @Bean(JOB_NAME)
     fun job(): Job {
         return jobBuilderFactory.get(JOB_NAME)
@@ -66,10 +57,18 @@ class TransactionProcessorJobConfiguration(
 
     private fun writer(): ItemWriter<ClassInformation> {
         return ItemWriter { items ->
-            logger.info(">>>>>>> ItemWriter")
+            log.info(">>>>>>> ItemWriter")
             for (item in items) {
-                logger.info("빈 정보={$item}")
+                log.info("빈 정보={$item}")
             }
         }
+    }
+
+    companion object {
+        private const val JOB_NAME = "transactionProcessorJob"
+        private const val BEAN_PREFIX = JOB_NAME + "_"
+        private const val CHUNK_SIZE = 10
+
+        private val log = KotlinLogging.logger {}
     }
 }
