@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.processor
 
 import com.elvis.batch.domain.Teacher
 import mu.KotlinLogging
@@ -20,15 +20,6 @@ class ProcessNullJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val emf: EntityManagerFactory
 ) {
-
-    companion object {
-        private const val JOB_NAME = "processNullBatch"
-        private const val BEAN_PREFIX = JOB_NAME + "_"
-        private const val CHUNK_SIZE = 10
-
-        private val logger = KotlinLogging.logger {}
-    }
-
     @Bean(JOB_NAME)
     fun job(): Job {
         return jobBuilderFactory.get(JOB_NAME)
@@ -64,7 +55,7 @@ class ProcessNullJobConfiguration(
             val isIgnoreTarget = teacher.id!! % 2 == 0L
 
             if (isIgnoreTarget) {
-                logger.info(">>>>>> Teacher name = {${teacher.name}}, isIgnoreTarget={$isIgnoreTarget}")
+                log.info(">>>>>> Teacher name = {${teacher.name}}, isIgnoreTarget={$isIgnoreTarget}")
                 null
             } else {
                 teacher
@@ -75,7 +66,15 @@ class ProcessNullJobConfiguration(
     private fun writer(): ItemWriter<Teacher> {
         return ItemWriter { items ->
             for (item in items)
-                logger.info("Teacher Name={${item.name}}")
+                log.info("Teacher Name={${item.name}}")
         }
+    }
+
+    companion object {
+        private const val JOB_NAME = "processNullBatch"
+        private const val BEAN_PREFIX = JOB_NAME + "_"
+        private const val CHUNK_SIZE = 10
+
+        private val log = KotlinLogging.logger {}
     }
 }
