@@ -1,10 +1,11 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.test
 
 import com.elvis.batch.TestBatchConfig
 import com.elvis.batch.domain.Sales
 import com.elvis.batch.domain.SalesRepository
 import com.elvis.batch.domain.SalesSum
 import com.elvis.batch.domain.SalesSumRepository
+import com.elvis.batch.job.test.BatchJpaUnitTestConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test

@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.test
 
 import com.elvis.batch.domain.SalesSum
 import org.springframework.batch.core.Job

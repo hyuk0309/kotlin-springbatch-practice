@@ -1,6 +1,7 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.test
 
 import com.elvis.batch.TestDataSourceConfiguration
+import com.elvis.batch.job.test.BatchOnlyJdbcReaderTestConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
