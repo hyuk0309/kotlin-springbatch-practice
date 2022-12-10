@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
 
+//TODO : jpa -> jdbc refactoring
 @SpringBatchTest
 @SpringBootTest(classes = [TestBatchConfig::class, JdbcBatchItemWriterJobConfiguration::class])
 internal class JdbcBatchItemWriterJobConfigurationTest {
