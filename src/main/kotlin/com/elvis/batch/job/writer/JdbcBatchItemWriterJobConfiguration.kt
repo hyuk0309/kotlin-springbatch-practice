@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.writer
 
 import com.elvis.batch.domain.Pay
 import mu.KotlinLogging
@@ -21,12 +21,6 @@ class JdbcBatchItemWriterJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val dataSource: DataSource
 ) {
-
-    companion object {
-        val logger = KotlinLogging.logger {}
-        const val CHUCK_SIZE = 10
-    }
-
     @Bean
     fun jdbcBatchItemWriterJob(): Job {
         return jobBuilderFactory.get("jdbcBatchItemWriterJob")
@@ -61,5 +55,10 @@ class JdbcBatchItemWriterJobConfiguration(
             .sql("insert into pay2(amount, tx_name, tx_date_time) values (:amount, :txName, :txDateTime)")
             .beanMapped()
             .build()
+    }
+
+    companion object {
+        val log = KotlinLogging.logger {}
+        const val CHUCK_SIZE = 10
     }
 }
