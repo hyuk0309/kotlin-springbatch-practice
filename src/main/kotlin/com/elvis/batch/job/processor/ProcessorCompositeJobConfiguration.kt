@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.processor
 
 import com.elvis.batch.domain.Teacher
 import mu.KotlinLogging
@@ -22,15 +22,6 @@ class ProcessorCompositeJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val emf: EntityManagerFactory
 ) {
-
-    companion object {
-        private const val JOB_NAME = "processorCompositeBatch"
-        private const val BEAN_PREFIX = JOB_NAME + "_"
-        private const val CHUNK_SIZE = 10
-
-        private val logger = KotlinLogging.logger {}
-    }
-
     @Bean(JOB_NAME)
     fun job(): Job {
         return jobBuilderFactory.get(JOB_NAME)
@@ -86,7 +77,15 @@ class ProcessorCompositeJobConfiguration(
     fun writer(): ItemWriter<String> {
         return ItemWriter { items ->
             for (item in items)
-                logger.info(item)
+                log.info(item)
         }
+    }
+
+    companion object {
+        private const val JOB_NAME = "processorCompositeBatch"
+        private const val BEAN_PREFIX = JOB_NAME + "_"
+        private const val CHUNK_SIZE = 10
+
+        private val log = KotlinLogging.logger {}
     }
 }
