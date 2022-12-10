@@ -1,4 +1,4 @@
-package com.elvis.batch.job
+package com.elvis.batch.job.writer
 
 import com.elvis.batch.domain.Pay
 import com.elvis.batch.domain.Pay2
@@ -21,12 +21,6 @@ class CustomItemWriterJobConfiguration(
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory
 ) {
-
-    companion object {
-        val logger = KotlinLogging.logger {}
-        const val CHUNK_SIZE = 10
-    }
-
     @Bean
     fun customItemWriterJob(): Job {
         return jobBuilderFactory.get("customItemWriterJob")
@@ -68,5 +62,10 @@ class CustomItemWriterJobConfiguration(
                 println(item)
             }
         }
+    }
+
+    companion object {
+        val log = KotlinLogging.logger {}
+        const val CHUNK_SIZE = 10
     }
 }
